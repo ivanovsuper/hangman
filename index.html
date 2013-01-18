@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title> Слова для виселицы </title>
+ </head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript">
+<!--
+  $(document).ready(function(){
+    $("#getit").click(function(){
+      var words = $("#words").val().replace(/ /g,'\n').replace(/\t/g,'\n');
+      var letters = $("#letters").val();
+      var wordlist = $.grep(words.split('\n'),function(el){
+        el = $.trim(el);
+        if (el=='')
+        {
+          return null
+        }
+        else
+        {
+          var found = false;
+          for (var i=0;i<letters.length;i++)
+          {
+            if (el.search(letters[i])>=0)
+            {
+              found = true;
+              break;
+            }
+          }
+          if (found)
+          {
+            return null;
+          }
+        }
+        return el;
+      });
+      $("#result").val(wordlist.join('\n'));
+    });
+    $("#stats").click(function(){
+      var resultletters={};
+      var wordlist = $("#result").val().split('\n');
+      $.each(wordlist, function(idx, el){
+        for (var i=0;i<el.length;i++)
+        {
+          resultletters[el[i]]= resultletters[el[i]] || 0;
+          resultletters[el[i]]++;
+        }
+      });
+      var str = '';
+      $.each(resultletters, function(idx, el){
+        str+=idx+':'+el+'\n';
+      });
+      $("#statslist").val(str);
+    });
+    $("#getwords").click(function(){
+      window.open("http://www.xworder.com/Xword.aspx","_blank");
+    });
+  });
+//-->
+</script>
+ <body>
+  <table>
+    <tr>
+      <th>Эти слова подходят</th>
+      <th>Этих букв нет в слове</th>
+      <th>Оставшиеся слова</th>
+      <th>Статистика букв в словах</th>
+    </tr>
+    <tr>
+      <td><textarea id="words" rows="20" cols="20"></textarea></td>
+      <td><input type="text" id="letters"/></td>
+      <td><textarea id="result" rows="20" cols="20"></textarea></td>
+      <td><textarea id="statslist" rows="20" cols="20"></textarea></td>
+    </tr>
+    <tr>
+      <td><button id="getwords">Получить слова</button></td>
+      <td><button id="getit">Убрать лишние слова</button></td>
+      <td colspan="2"><button id="stats">Посчитать статистику букв в словах</button></td>
+    </tr>
+  </table>
+  
+ </body>
+</html>
